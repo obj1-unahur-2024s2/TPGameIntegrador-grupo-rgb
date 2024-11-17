@@ -33,16 +33,16 @@ object nivel {
 
     // Retorna la velocidad de los aliens basada en el nivel actual
     method velocidadAliens() {
-        return 5000 / nivelActual  // Aumenta la velocidad al subir de nivel
+        return 4000 / nivelActual  // Aumenta la velocidad al subir de nivel
     }
 
     // Método para crear la formación de aliens
     method crearAliens() {
         const aliens = []
         const posiciones = [
-            game.at(2, 9), game.at(3, 9), game.at(4, 9), game.at(5, 9), game.at(6, 9),
-            game.at(2, 8), game.at(3, 8), game.at(4, 8), game.at(5, 8), game.at(6, 8),
-            game.at(2, 7), game.at(3, 7), game.at(4, 7), game.at(5, 7), game.at(6, 7)
+            game.at(1, 9),game.at(2, 9), game.at(3, 9), game.at(4, 9), game.at(5, 9), game.at(6, 9),game.at(7, 9),game.at(8, 9),
+            game.at(1, 8),game.at(2, 8), game.at(3, 8), game.at(4, 8), game.at(5, 8), game.at(6, 8),game.at(7, 8),game.at(8, 8),
+            game.at(1, 7),game.at(2, 7), game.at(3, 7), game.at(4, 7), game.at(5, 7), game.at(6, 7),game.at(7, 7),game.at(8, 7)
         ]
 
         posiciones.forEach({ posicion =>
@@ -78,6 +78,8 @@ object configurarNivel {
         var aliens = nivel.nuevaOleada()
 
         configurarTeclas.configurar(aliens)
+
+        game.boardGround("fondo_juego.jpg")
 
         // Evento `onTick` para mover los aliens y verificar condiciones
         game.onTick(nivel.velocidadAliens(), "moverAliens", {

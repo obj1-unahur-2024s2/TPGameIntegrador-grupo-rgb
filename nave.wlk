@@ -6,7 +6,7 @@ object nave {
     var property position = game.at(4, 0)  // Ajusta `4` según la anchura del tablero
 
     // Asignamos la imagen de la nave
-    method image() = "nave.png"
+    method image() = "nave_juego.gif"
 
     // Movimiento hacia la derecha, sin salir del límite del tablero
     method moverADerecha() {
