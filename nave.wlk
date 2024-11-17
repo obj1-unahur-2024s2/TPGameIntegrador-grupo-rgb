@@ -31,12 +31,14 @@ object nave {
                 // La nave ataca al alien más cercano
                 alienMasCercano.recibirDanio(poder)
 
-                // Crear efecto visual de disparo (explosión) en la posición del alien
+                // Crear efecto visual y de sonido del disparo (explosión) en la posición del alien
                 const explosion = new Explosion(position = game.at(self.position().x(), alienMasCercano.position().y()))
                 game.addVisual(explosion)
+                game.sound("sonido-disparo.mp3").play()
 
-                // Verificamos si el alien ha sido destruido
+                // Verificamos si el alien ha sido destruido y agregamos efecto de sonido de la explosión
                 if (!alienMasCercano.estaVivo()) {
+                    game.sound("sonido-explosion.mp3").play()
                     game.removeVisual(alienMasCercano)  // Removemos el alien del juego
                     aliens.remove(alienMasCercano)      // Eliminamos el alien de la lista de aliens
                 }
@@ -60,5 +62,11 @@ object imagenInicial {
     const property position = game.at(0,0)
 
     // Asignamos la imagen del disparo
-    method image() = "pantallaInicio.png"
+    method image() = "pantalla-inicio.jpg"
+}
+object imagenFinal {
+    const property position = game.at(0,0)
+
+    // Asignamos la imagen del disparo
+    method image() = "pantalla-final.jpg"
 }
