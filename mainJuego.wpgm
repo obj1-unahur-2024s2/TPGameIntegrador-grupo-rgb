@@ -67,25 +67,22 @@ object configurarTeclas {
     method configurar(aliens) {
         keyboard.right().onPressDo({ nave.moverADerecha() })
         keyboard.left().onPressDo({ nave.moverAIzquierda() })
-        keyboard.enter().onPressDo({ nave.disparar(aliens) })  // Disparar usando la lista de aliens REVISAR ERROR AL DISPARAR
+        keyboard.enter().onPressDo({ nave.disparar(aliens) })  // Disparar usando la lista de aliens
     }
 }
 
 object configurarNivel {
-    const imagenDeInicio = new ImagenInicial(position = game.at(0,0))
     method iniciarPantallaInicial()
     {
         if (nivel.nivelActual() == 0)
         {   
-            game.addVisual(imagenDeInicio)
-            keyboard.enter().onPressDo({ nivel.subirNivel() self.inicializar() })
+            game.addVisual(imagenInicial)
+            keyboard.enter().onPressDo({ if(nivel.nivelActual() == 0) {nivel.subirNivel() self.inicializar() game.removeVisual(imagenInicial)} })
             game.start()
         }
     }
     method inicializar() 
     {   
-        game.removeVisual(imagenDeInicio)
-
         game.addVisual(nave)
 
         var aliens = nivel.nuevaOleada()
@@ -93,7 +90,6 @@ object configurarNivel {
         game.boardGround("fondo_juego.jpg")
 
         configurarTeclas.configurar(aliens)
-
 
         // Evento `onTick` para mover los aliens y verificar condiciones
         game.onTick(nivel.velocidadAliens(), "moverAliens", {

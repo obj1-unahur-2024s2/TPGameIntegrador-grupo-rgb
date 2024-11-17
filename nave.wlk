@@ -56,8 +56,8 @@ class Explosion {
     method image() = "laser.png"
 }
 
-class ImagenInicial {
-    var property position
+object imagenInicial {
+    const property position = game.at(0,0)
 
     // Asignamos la imagen del disparo
     method image() = "pantallaInicio.png"
