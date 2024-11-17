@@ -9,15 +9,15 @@ program SpaceInvaders {
     game.height(10)
     game.cellSize(50)  // Tamaño de cada celda
 
-    configurarNivel.inicializar()
+    configurarNivel.iniciarPantallaInicial() //luego de cargar pantalla inicial inicia el juego
 
     // Iniciar el juego
-    game.start()
+    //game.start()
 }
 
 // Objeto para gestionar el nivel y la velocidad de los aliens
 object nivel {
-    var nivelActual = 1
+    var nivelActual = 0
 
     method nivelActual() = nivelActual
 
@@ -28,7 +28,7 @@ object nivel {
         }
 
         game.removeTickEvent("moverAliens")
-        configurarNivel.inicializar()
+        //configurarNivel.inicializar()
     }
 
     // Retorna la velocidad de los aliens basada en el nivel actual
@@ -67,17 +67,33 @@ object configurarTeclas {
     method configurar(aliens) {
         keyboard.right().onPressDo({ nave.moverADerecha() })
         keyboard.left().onPressDo({ nave.moverAIzquierda() })
-        keyboard.enter().onPressDo({ nave.disparar(aliens) })  // Disparar usando la lista de aliens
+        keyboard.enter().onPressDo({ nave.disparar(aliens) })  // Disparar usando la lista de aliens REVISAR ERROR AL DISPARAR
     }
 }
 
 object configurarNivel {
-    method inicializar() {
+    const imagenDeInicio = new ImagenInicial(position = game.at(0,0))
+    method iniciarPantallaInicial()
+    {
+        if (nivel.nivelActual() == 0)
+        {   
+            game.addVisual(imagenDeInicio)
+            keyboard.enter().onPressDo({ nivel.subirNivel() self.inicializar() })
+            game.start()
+        }
+    }
+    method inicializar() 
+    {   
+        game.removeVisual(imagenDeInicio)
+
         game.addVisual(nave)
 
         var aliens = nivel.nuevaOleada()
 
+        game.boardGround("fondo_juego.jpg")
+
         configurarTeclas.configurar(aliens)
+
 
         // Evento `onTick` para mover los aliens y verificar condiciones
         game.onTick(nivel.velocidadAliens(), "moverAliens", {

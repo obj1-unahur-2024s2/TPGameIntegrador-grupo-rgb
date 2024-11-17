@@ -55,3 +55,10 @@ class Explosion {
     // Asignamos la imagen del disparo
     method image() = "laser.png"
 }
+
+class ImagenInicial {
+    var property position
+
+    // Asignamos la imagen del disparo
+    method image() = "pantallaInicio.png"
+}
