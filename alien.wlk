@@ -3,7 +3,7 @@ import wollok.game.*
 class Alien {
     // Propiedades del alien
     var property position
-    var property vida = 100
+    var property vida
 
     // Asignamos la imagen que representa al alien
     method image() = "alien_blanco.gif"
@@ -36,9 +36,5 @@ class AlienNormal inherits Alien{
 }
 
 class AlienJefe inherits Alien {
-    method agregarVida() {
-        vida = vida*2
-    }
-    
     override method image() = "alien.gif" 
 }

@@ -70,3 +70,9 @@ object imagenFinal {
     // Asignamos la imagen del disparo
     method image() = "pantalla-final.jpg"
 }
+
+object imagenJuego{
+    const property position = game.at(0,0)
+
+    method image() = "fondo-juego.jpg" 
+}
