@@ -1,6 +1,6 @@
-import wollok.game.*
 import nave.*
 import alien.*
+
 
 program SpaceInvaders {
     // Configuración del tablero
@@ -28,7 +28,7 @@ object nivel {
         }
 
         game.removeTickEvent("moverAliens")
-        //configurarNivel.inicializar()
+        configurarNivel.inicializar()
     }
 
     // Retorna la velocidad de los aliens basada en el nivel actual
@@ -95,24 +95,20 @@ object configurarNivel {
         if (nivel.nivelActual() == 0)
         {   
             game.addVisual(imagenInicial)
-            keyboard.enter().onPressDo({ if(nivel.nivelActual() == 0) {nivel.subirNivel() self.inicializar() game.removeVisual(imagenInicial)} })
+            keyboard.enter().onPressDo({ if(nivel.nivelActual() == 0) {game.removeVisual(imagenInicial) self.detenerMusicaMenuPrincipal() nivel.subirNivel()} })
             game.start()
         }
     }
+    
     method inicializar() 
     {   
         game.addVisual(nave)
 
         var aliens = nivel.nuevaOleada()
-
-        game.boardGround("fondo-juego.jpg")
-        
-        self.detenerMusicaMenuPrincipal()
-        self.reprocudirMusicaNiveles()
         
         configurarTeclas.configurar(aliens)
 
-        // Evento `onTick` para mover los aliens y verificar condiciones
+        // Evento onTick para mover los aliens y verificar condiciones
         game.onTick(nivel.velocidadAliens(), "moverAliens", {
             if (aliens.size() > 0) {
                 aliens.forEach({ alien =>
