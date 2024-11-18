@@ -1,5 +1,6 @@
 import nave.*
 import alien.*
+import musica.*
 
 
 program SpaceInvaders {
@@ -11,29 +12,8 @@ program SpaceInvaders {
 
     configurarNivel.iniciarPantallaInicial() //luego de cargar pantalla inicial inicia el juego
 
-    // Iniciar el juego
-    //game.start()
 }
 
-object musica{
-        //configuracion musica del juego y funciones para reproducir y detener
-        const musicaMenuPrincipal = game.sound("musica-pantalla-inicial.mp3")
-        const musicaNiveles = game.sound("musica-niveles.mp3")
-        
-        method reprocudirMusicaMenuPrincipal() {
-            musicaMenuPrincipal.shouldLoop(true)
-            musicaMenuPrincipal.play()
-        }
-
-        method detenerMusicaMenuPrincipal() {
-            musicaMenuPrincipal.stop()
-        }
-
-        method reprocudirMusicaNiveles() {
-            musicaNiveles.shouldLoop(true)
-            musicaNiveles.play()
-        }
-}
 // Objeto para gestionar el nivel y la velocidad de los aliens
 object nivel {
     var nivelActual = 0
@@ -50,6 +30,10 @@ object nivel {
 
         game.removeTickEvent("moverAliens")
         configurarNivel.inicializar()
+    }
+
+    method reiniciarNivel(){
+        nivelActual = 0
     }
 
     // Retorna la velocidad de los aliens basada en el nivel actual
@@ -137,7 +121,12 @@ object configurarNivel {
 
                 // Verificar si algún alien ha llegado a la parte inferior del tablero
                 if (aliens.any({ alien => alien.position().y() <= 0 })) {
-                    game.clear()  // Limpia el tablero y termina el juego
+                    game.removeVisual(nave)
+                    game.addVisual(imagenFinal)
+                    musica.detenerMusicaNiveles()
+                    game.say(nave, "¡Felicidades! Has completado todos los niveles.")
+                    keyboard.r().onPressDo({self.reiniciar()})
+                    keyboard.enter().onPressDo({game.clear()})
                 }
             }
 
@@ -151,10 +140,20 @@ object configurarNivel {
                         nivel.subirNivel()
                     })
                 } else {  // Si hemos llegado al tercer nivel
+                    game.removeVisual(nave)
                     game.addVisual(imagenFinal)
+                    musica.detenerMusicaNiveles()
                     game.say(nave, "¡Felicidades! Has completado todos los niveles.")
+                    keyboard.r().onPressDo({self.reiniciar()})
+                    keyboard.enter().onPressDo({game.clear()})
                 }
             }
         })
+    }
+
+    method reiniciar() {
+        game.clear()
+        nivel.reiniciarNivel()
+        self.iniciarPantallaInicial()
     }
 }
