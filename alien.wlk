@@ -3,11 +3,10 @@ import wollok.game.*
 class Alien {
     // Propiedades del alien
     var property position
-    var property vida = 100
-    var property imagenActual = "alien1.png"  // Imagen inicial
+    var property vida
 
     // Asignamos la imagen que representa al alien
-    method image() = imagenActual
+    method image() = "alien_blanco.gif"
 
     // Método para inicializar la posición del alien
     method initialize(posicionInicial) {
@@ -18,13 +17,6 @@ class Alien {
     method moverAbajo() {
         // Actualizamos la posición moviéndolo una celda hacia abajo
         position = game.at(position.x(), position.y() - 1)
-        
-        // Cambiar la imagen del alien alternando entre alien1.png y alien2.png
-        if (imagenActual == "alien1.png") {
-            imagenActual = "alien2.png"
-        } else {
-            imagenActual = "alien1.png"
-        }
     }
 
     // Método para recibir daño
@@ -37,4 +29,12 @@ class Alien {
 
     // Método para verificar si el alien está vivo
     method estaVivo() = vida > 0
+}
+
+
+class AlienNormal inherits Alien{
+}
+
+class AlienJefe inherits Alien {
+    override method image() = "alien.gif" 
 }

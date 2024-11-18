@@ -6,7 +6,7 @@ object nave {
     var property position = game.at(4, 0)  // Ajusta `4` según la anchura del tablero
 
     // Asignamos la imagen de la nave
-    method image() = "nave.png"
+    method image() = "nave_juego.gif"
 
     // Movimiento hacia la derecha, sin salir del límite del tablero
     method moverADerecha() {
@@ -31,12 +31,14 @@ object nave {
                 // La nave ataca al alien más cercano
                 alienMasCercano.recibirDanio(poder)
 
-                // Crear efecto visual de disparo (explosión) en la posición del alien
+                // Crear efecto visual y de sonido del disparo (explosión) en la posición del alien
                 const explosion = new Explosion(position = game.at(self.position().x(), alienMasCercano.position().y()))
                 game.addVisual(explosion)
+                game.sound("sonido-disparo.mp3").play()
 
-                // Verificamos si el alien ha sido destruido
+                // Verificamos si el alien ha sido destruido y agregamos efecto de sonido de la explosión
                 if (!alienMasCercano.estaVivo()) {
+                    game.sound("sonido-explosion.mp3").play()
                     game.removeVisual(alienMasCercano)  // Removemos el alien del juego
                     aliens.remove(alienMasCercano)      // Eliminamos el alien de la lista de aliens
                 }
@@ -54,4 +56,23 @@ class Explosion {
 
     // Asignamos la imagen del disparo
     method image() = "laser.png"
+}
+
+object imagenInicial {
+    const property position = game.at(0,0)
+
+    // Asignamos la imagen del disparo
+    method image() = "pantalla-inicio.jpg"
+}
+object imagenFinal {
+    const property position = game.at(0,0)
+
+    // Asignamos la imagen del disparo
+    method image() = "pantalla-final.jpg"
+}
+
+object imagenJuego{
+    const property position = game.at(0,0)
+
+    method image() = "fondo-juego.jpg" 
 }
