@@ -18,6 +18,7 @@ program SpaceInvaders {
 // Objeto para gestionar el nivel y la velocidad de los aliens
 object nivel {
     var nivelActual = 0
+    var property contadorJefes = 3 
 
     method nivelActual() = nivelActual
 
@@ -25,6 +26,7 @@ object nivel {
     method subirNivel() {
         if (nivelActual < 3) {
             nivelActual += 1
+            contadorJefes+=1
         }
 
         game.removeTickEvent("moverAliens")
@@ -45,10 +47,22 @@ object nivel {
             game.at(1, 7),game.at(2, 7), game.at(3, 7), game.at(4, 7), game.at(5, 7), game.at(6, 7),game.at(7, 7),game.at(8, 7)
         ]
 
+        var contador = 0
+
         posiciones.forEach({ posicion =>
-            const alien = new Alien(position=posicion)  // Crear un nuevo objeto Alien
-            alien.initialize(posicion)  // Inicializar la posición del alien correctamente
-            aliens.add(alien)  // Agregar el alien a la lista de aliens
+            //const randomNumber = 0.randomUpTo(1).round()
+          
+            if(contador < nivel.contadorJefes()-1 and aliens.size()>0){
+                contador+=1
+                const alienJefe = new AlienJefe(position=posicion)
+                alienJefe.agregarVida()
+                alienJefe.initialize(posicion)  // Inicializar la posición del alien correctamente
+                aliens.add(alienJefe)  // Agregar el alien a la lista de aliens
+            }else{
+                const alienNormal = new AlienNormal(position=posicion)
+                alienNormal.initialize(posicion)  // Inicializar la posición del alien correctamente
+                aliens.add(alienNormal)  // Agregar el alien a la lista de aliens
+            }
         })
 
         return aliens
@@ -99,7 +113,7 @@ object configurarNivel {
             game.start()
         }
     }
-    
+
     method inicializar() 
     {   
         game.addVisual(nave)

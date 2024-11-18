@@ -30,3 +30,15 @@ class Alien {
     // Método para verificar si el alien está vivo
     method estaVivo() = vida > 0
 }
+
+
+class AlienNormal inherits Alien{
+}
+
+class AlienJefe inherits Alien {
+    method agregarVida() {
+        vida = vida*2
+    }
+    
+    override method image() = "alien.gif" 
+}
