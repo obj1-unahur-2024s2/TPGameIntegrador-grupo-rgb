@@ -57,22 +57,3 @@ class Explosion {
     // Asignamos la imagen del disparo
     method image() = "laser.png"
 }
-
-object imagenInicial {
-    const property position = game.at(0,0)
-
-    // Asignamos la imagen del disparo
-    method image() = "pantalla-inicio.jpg"
-}
-object imagenFinal {
-    const property position = game.at(0,0)
-
-    // Asignamos la imagen del disparo
-    method image() = "pantalla-final.jpg"
-}
-
-object imagenJuego{
-    const property position = game.at(0,0)
-
-    method image() = "fondo-juego.jpg" 
-}

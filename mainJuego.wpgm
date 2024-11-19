@@ -1,6 +1,7 @@
 import nave.*
 import alien.*
 import musica.*
+import imagen.*
 
 
 program SpaceInvaders {
@@ -92,6 +93,7 @@ object configurarNivel {
         musica.reprocudirMusicaMenuPrincipal()
         if (nivel.nivelActual() == 0)
         {   
+            const imagenInicial = new ImagenInicial()
             game.addVisual(imagenInicial)
             keyboard.enter().onPressDo({ if(nivel.nivelActual() == 0) {game.removeVisual(imagenInicial) musica.detenerMusicaMenuPrincipal() musica.reprocudirMusicaNiveles() nivel.subirNivel()} })
             game.start()
@@ -100,6 +102,8 @@ object configurarNivel {
 
     method inicializar() 
     {   
+        const imagenJuego = new ImagenJuego()
+        
         game.addVisual(imagenJuego)
         game.addVisual(nave)
 
@@ -121,8 +125,9 @@ object configurarNivel {
 
                 // Verificar si algún alien ha llegado a la parte inferior del tablero
                 if (aliens.any({ alien => alien.position().y() <= 0 })) {
+                    const imagenPerder = new ImagenPerder()
                     game.removeVisual(nave)
-                    game.addVisual(imagenFinal)
+                    game.addVisual(imagenPerder)
                     musica.detenerMusicaNiveles()
                     game.say(nave, "¡Felicidades! Has completado todos los niveles.")
                     keyboard.r().onPressDo({self.reiniciar()})
@@ -140,6 +145,7 @@ object configurarNivel {
                         nivel.subirNivel()
                     })
                 } else {  // Si hemos llegado al tercer nivel
+                    const imagenFinal = new ImagenFinal()
                     game.removeVisual(nave)
                     game.addVisual(imagenFinal)
                     musica.detenerMusicaNiveles()
