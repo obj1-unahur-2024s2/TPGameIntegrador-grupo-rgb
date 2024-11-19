@@ -3,4 +3,5 @@
 .history
 
 # Wollok Log
+*.log
 
