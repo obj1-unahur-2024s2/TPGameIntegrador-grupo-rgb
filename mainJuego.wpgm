@@ -12,7 +12,6 @@ program SpaceInvaders {
     game.cellSize(50)  // Tamaño de cada celda
 
     configurarNivel.iniciarPantallaInicial() //luego de cargar pantalla inicial inicia el juego
-
 }
 
 // Objeto para gestionar el nivel y la velocidad de los aliens
@@ -107,7 +106,7 @@ object configurarNivel {
         game.addVisual(imagenJuego)
         game.addVisual(nave)
 
-        var aliens = nivel.nuevaOleada()
+        const aliens = nivel.nuevaOleada()
         
         configurarTeclas.configurar(aliens)
 
