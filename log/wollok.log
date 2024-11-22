@@ -55,3 +55,7 @@
 {"level":"info","message":"⌛ Validating testJuego.wtest","timeElapsed":152,"timestamp":"2024-11-19T22:05:57.445Z"}
 {"level":"info","message":"⌛ Validating musica.wlk","timeElapsed":134,"timestamp":"2024-11-19T22:05:57.580Z"}
 {"level":"info","message":"⌛ Validating imagen.wlk","timeElapsed":160,"timestamp":"2024-11-19T22:05:57.741Z"}
+{"exitCode":"SIGINT","level":"info","message":"👾 Game executed mainJuego.SpaceInvaders on c:\\Users\\Ignacio\\Desktop\\objetos1\\tpfinal\\TPGameIntegrador-grupo-rgb","timeElapsed":27325,"timestamp":"2024-11-22T22:26:12.779Z"}
+{"exitCode":"SIGINT","level":"info","message":"👾 Game executed mainJuego.SpaceInvaders on c:\\Users\\Ignacio\\Desktop\\objetos1\\tpfinal\\TPGameIntegrador-grupo-rgb","timeElapsed":25073,"timestamp":"2024-11-22T22:28:36.211Z"}
+{"exitCode":"SIGINT","level":"info","message":"👾 Game executed mainJuego.SpaceInvaders on c:\\Users\\Ignacio\\Desktop\\objetos1\\tpfinal\\TPGameIntegrador-grupo-rgb","timeElapsed":19550,"timestamp":"2024-11-22T22:31:31.466Z"}
+{"exitCode":"SIGINT","level":"info","message":"👾 Game executed mainJuego.SpaceInvaders on c:\\Users\\Ignacio\\Desktop\\objetos1\\tpfinal\\TPGameIntegrador-grupo-rgb","timeElapsed":60321,"timestamp":"2024-11-22T22:44:56.639Z"}
