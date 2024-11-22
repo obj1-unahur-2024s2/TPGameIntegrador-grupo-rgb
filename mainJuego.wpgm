@@ -82,7 +82,7 @@ object configurarTeclas {
     method configurar(aliens) {
         keyboard.right().onPressDo({ nave.moverADerecha() })
         keyboard.left().onPressDo({ nave.moverAIzquierda() })
-        keyboard.enter().onPressDo({ nave.disparar(aliens) })  // Disparar usando la lista de aliens
+        keyboard.space().onPressDo({ nave.disparar(aliens) })  // Disparar usando la lista de aliens
     }
 }
 
