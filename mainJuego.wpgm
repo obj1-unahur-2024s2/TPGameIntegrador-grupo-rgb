@@ -1,6 +1,8 @@
-import wollok.game.*
 import nave.*
 import alien.*
+import musica.*
+import imagen.*
+
 
 program SpaceInvaders {
     // Configuración del tablero
@@ -10,14 +12,12 @@ program SpaceInvaders {
     game.cellSize(50)  // Tamaño de cada celda
 
     configurarNivel.iniciarPantallaInicial() //luego de cargar pantalla inicial inicia el juego
-
-    // Iniciar el juego
-    //game.start()
 }
 
 // Objeto para gestionar el nivel y la velocidad de los aliens
 object nivel {
     var nivelActual = 0
+    var property contadorJefes = 3 
 
     method nivelActual() = nivelActual
 
@@ -25,15 +25,20 @@ object nivel {
     method subirNivel() {
         if (nivelActual < 3) {
             nivelActual += 1
+            contadorJefes+=1
         }
 
         game.removeTickEvent("moverAliens")
-        //configurarNivel.inicializar()
+        configurarNivel.inicializar()
+    }
+
+    method reiniciarNivel(){
+        nivelActual = 0
     }
 
     // Retorna la velocidad de los aliens basada en el nivel actual
     method velocidadAliens() {
-        return 4000 / nivelActual  // Aumenta la velocidad al subir de nivel
+        return 4500 / nivelActual  // Aumenta la velocidad al subir de nivel
     }
 
     // Método para crear la formación de aliens
@@ -45,10 +50,20 @@ object nivel {
             game.at(1, 7),game.at(2, 7), game.at(3, 7), game.at(4, 7), game.at(5, 7), game.at(6, 7),game.at(7, 7),game.at(8, 7)
         ]
 
+        var contador = 0
+
         posiciones.forEach({ posicion =>
-            const alien = new Alien(position=posicion)  // Crear un nuevo objeto Alien
-            alien.initialize(posicion)  // Inicializar la posición del alien correctamente
-            aliens.add(alien)  // Agregar el alien a la lista de aliens
+          
+            if(contador < self.contadorJefes()-1 and aliens.size()>0){
+                contador+=1
+                const alienJefe = new AlienJefe(position=posicion, vida=200)
+                alienJefe.initialize(posicion)  // Inicializar la posición del alien correctamente
+                aliens.add(alienJefe)  // Agregar el alien a la lista de aliens
+            }else{
+                const alienNormal = new AlienNormal(position=posicion, vida=100)
+                alienNormal.initialize(posicion)  // Inicializar la posición del alien correctamente
+                aliens.add(alienNormal)  // Agregar el alien a la lista de aliens
+            }
         })
 
         return aliens
@@ -72,47 +87,30 @@ object configurarTeclas {
 }
 
 object configurarNivel {
-    //configuracion musica del juego y funciones para reproducir y detener
-    const musicaMenuPrincipal = game.sound("musica-pantalla-inicial.mp3")
-    const musicaNiveles = game.sound("musica-niveles.mp3")
-    
-    method reprocudirMusicaMenuPrincipal() {
-        musicaMenuPrincipal.shouldLoop(true)
-        musicaMenuPrincipal.play()
-    }
-
-    method detenerMusicaMenuPrincipal() {
-        musicaMenuPrincipal.stop()
-    }
-
-    method reprocudirMusicaNiveles() {
-         musicaNiveles.shouldLoop(true)
-         musicaNiveles.play()
-    }
 
     method iniciarPantallaInicial() {
-        self.reprocudirMusicaMenuPrincipal()
+        musica.reprocudirMusicaMenuPrincipal()
         if (nivel.nivelActual() == 0)
         {   
+            const imagenInicial = new ImagenInicial()
             game.addVisual(imagenInicial)
-            keyboard.enter().onPressDo({ if(nivel.nivelActual() == 0) {nivel.subirNivel() self.inicializar() game.removeVisual(imagenInicial)} })
+            keyboard.enter().onPressDo({ if(nivel.nivelActual() == 0) {game.removeVisual(imagenInicial) musica.detenerMusicaMenuPrincipal() musica.reprocudirMusicaNiveles() nivel.subirNivel()} })
             game.start()
         }
     }
+
     method inicializar() 
     {   
+        const imagenJuego = new ImagenJuego()
+        
+        game.addVisual(imagenJuego)
         game.addVisual(nave)
 
-        var aliens = nivel.nuevaOleada()
-
-        game.boardGround("fondo-juego.jpg")
-        
-        self.detenerMusicaMenuPrincipal()
-        self.reprocudirMusicaNiveles()
+        const aliens = nivel.nuevaOleada()
         
         configurarTeclas.configurar(aliens)
 
-        // Evento `onTick` para mover los aliens y verificar condiciones
+        // Evento onTick para mover los aliens y verificar condiciones
         game.onTick(nivel.velocidadAliens(), "moverAliens", {
             if (aliens.size() > 0) {
                 aliens.forEach({ alien =>
@@ -126,23 +124,41 @@ object configurarNivel {
 
                 // Verificar si algún alien ha llegado a la parte inferior del tablero
                 if (aliens.any({ alien => alien.position().y() <= 0 })) {
-                    game.clear()  // Limpia el tablero y termina el juego
+                    const imagenPerder = new ImagenPerder()
+                    game.removeVisual(nave)
+                    game.addVisual(imagenPerder)
+                    musica.detenerMusicaNiveles()
+                    game.say(nave, "¡Felicidades! Has completado todos los niveles.")
+                    keyboard.r().onPressDo({self.reiniciar()})
+                    keyboard.enter().onPressDo({game.clear()})
                 }
             }
 
             // Verificar si todos los aliens han sido eliminados
             if (aliens.size() == 0) {
+                game.removeVisual(imagenJuego)
+
                 if (nivel.nivelActual() < 3) {  // Si no hemos llegado al tercer nivel
                     game.schedule(2000, {
-                        game.clear()  // Limpia el tablero
+                        game.clear()
                         nivel.subirNivel()
                     })
                 } else {  // Si hemos llegado al tercer nivel
+                    const imagenFinal = new ImagenFinal()
+                    game.removeVisual(nave)
                     game.addVisual(imagenFinal)
+                    musica.detenerMusicaNiveles()
                     game.say(nave, "¡Felicidades! Has completado todos los niveles.")
-                    game.clear()  // Limpia el tablero y termina el juego
+                    keyboard.r().onPressDo({self.reiniciar()})
+                    keyboard.enter().onPressDo({game.clear()})
                 }
             }
         })
+    }
+
+    method reiniciar() {
+        game.clear()
+        nivel.reiniciarNivel()
+        self.iniciarPantallaInicial()
     }
 }

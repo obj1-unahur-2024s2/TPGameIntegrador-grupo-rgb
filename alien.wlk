@@ -3,7 +3,7 @@ import wollok.game.*
 class Alien {
     // Propiedades del alien
     var property position
-    var property vida = 100
+    var property vida
 
     // Asignamos la imagen que representa al alien
     method image() = "alien_blanco.gif"
@@ -29,4 +29,12 @@ class Alien {
 
     // Método para verificar si el alien está vivo
     method estaVivo() = vida > 0
+}
+
+
+class AlienNormal inherits Alien{
+}
+
+class AlienJefe inherits Alien {
+    override method image() = "alien.gif" 
 }
