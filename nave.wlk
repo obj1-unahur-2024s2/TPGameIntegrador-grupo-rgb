@@ -74,16 +74,26 @@ class Disparo{
     method initialize(numero,aliens) {
         game.addVisual(self)
         game.onTick(200, "disparo-" + numero, {
+
             if(self.hayAlienAqui(aliens)){
                 const alienEnPosicion = aliens.find({alien => alien.position() == self.position()})
                 alienEnPosicion.recibirDanio(nave.poder())
+
+                // Crear efecto visual y de sonido del disparo (explosión) en la posición del alien
+                const explosion = new Explosion(position = game.at(self.position().x(), alienEnPosicion.position().y()))
+                game.addVisual(explosion)
+
                 if(!alienEnPosicion.estaVivo()){
                     game.sound("sonido-explosion.mp3").play()
                     game.removeVisual(alienEnPosicion)  // Removemos el alien del juego
                     aliens.remove(alienEnPosicion)      // Eliminamos el alien de la lista de aliens
-
-                    self.eliminarse(numero)
                 }
+
+                // Remover la explosión después de 1 segundo
+                game.schedule(1000, { game.removeVisual(explosion) })
+
+                self.eliminarse(numero)
+                
             }else{
                 self.avanzar(numero)
             }
