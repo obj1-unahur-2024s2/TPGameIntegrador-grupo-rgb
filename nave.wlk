@@ -63,7 +63,7 @@ class Explosion {
     var property position
 
     // Asignamos la imagen del disparo
-    method image() = "laser.png"
+    method image() = "explosion-alien.gif"
 }
 
 class Disparo{
@@ -90,7 +90,7 @@ class Disparo{
                 }
 
                 // Remover la explosión después de 1 segundo
-                game.schedule(1000, { game.removeVisual(explosion) })
+                game.schedule(500, { game.removeVisual(explosion) })
 
                 self.eliminarse(numero)
                 

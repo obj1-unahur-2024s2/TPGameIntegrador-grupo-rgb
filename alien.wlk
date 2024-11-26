@@ -36,5 +36,5 @@ class AlienNormal inherits Alien{
 }
 
 class AlienJefe inherits Alien {
-    override method image() = "alien.gif" 
+    override method image() = "alien_jefe.gif" 
 }
